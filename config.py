@@ -127,8 +127,8 @@ class Settings:
 
     # Разбиение на узлы (03a §2, 06-implementation-guide §7)
     child_min_chars: int = field(default_factory=lambda: env_int("CHILD_MIN_CHARS", 200, 20, 2000))
-    child_max_chars: int = field(default_factory=lambda: env_int("CHILD_MAX_CHARS", 1200, 300, 8000))
-    split_overlap: float = field(default_factory=lambda: env_float("SPLIT_OVERLAP", 0.12, 0.0, 0.5))
+    child_max_chars: int = field(default_factory=lambda: env_int("CHILD_MAX_CHARS", 1800, 300, 8000))
+    split_overlap: float = field(default_factory=lambda: env_float("SPLIT_OVERLAP", 0.2, 0.0, 0.5))
     # Контекст: адаптивный родитель, малые документы целиком, опись базы (03a §2.2, §3.3)
     parent_max_chars: int = field(default_factory=lambda: env_int("PARENT_MAX_CHARS", 3500, 500, 20000))
     whole_doc_chars: int = field(default_factory=lambda: env_int("WHOLE_DOC_CHARS", 8000, 0, 50000))
@@ -145,13 +145,13 @@ class Settings:
     # Реранк и бюджет контекста (T1.13; 03b §3)
     rerank_candidates: int = field(default_factory=lambda: env_int("RERANK_CANDIDATES", 40, 5, 200))
     use_rerank_pool_48: bool = field(default_factory=lambda: env_bool("USE_RERANK_POOL_48", False))
-    use_hyde: bool = field(default_factory=lambda: env_bool("USE_HYDE", False))
+    use_hyde: bool = field(default_factory=lambda: env_bool("USE_HYDE", True))
     use_chain_of_note: bool = field(default_factory=lambda: env_bool("USE_CHAIN_OF_NOTE", False))
     use_bge_query_prefix: bool = field(default_factory=lambda: env_bool("USE_BGE_QUERY_PREFIX", False))
-    use_best_of_two: bool = field(default_factory=lambda: env_bool("USE_BEST_OF_TWO", False))
+    use_best_of_two: bool = field(default_factory=lambda: env_bool("USE_BEST_OF_TWO", True))
     best_of_n: int = field(default_factory=lambda: env_int("BEST_OF_N", 2, 0, 8))  # T3.27: число доп. генераций
-    use_stepback: bool = field(default_factory=lambda: env_bool("USE_STEPBACK", False))
-    use_draft_judge: bool = field(default_factory=lambda: env_bool("USE_DRAFT_JUDGE", False))
+    use_stepback: bool = field(default_factory=lambda: env_bool("USE_STEPBACK", True))
+    use_draft_judge: bool = field(default_factory=lambda: env_bool("USE_DRAFT_JUDGE", True))
     use_draft_judge_full: bool = field(default_factory=lambda: env_bool("USE_DRAFT_JUDGE_FULL", False))
     use_minimal: bool = field(default_factory=lambda: env_bool("USE_MINIMAL", True))
     use_contextual: bool = field(default_factory=lambda: env_bool("USE_CONTEXTUAL", False))
@@ -175,7 +175,7 @@ class Settings:
     # Инструкция реранкеру (03b §3, кандидат R): Qwen3-Reranker обучен с префиксом «Instruct: … Query: …»
     rerank_instruct: bool = field(default_factory=lambda: env_bool("RERANK_INSTRUCT", False))
     # Подвопросы (03b §3, кандидат S): роутер выдаёт до 3 аспектов; каждый ищется и реранжируется с квотой
-    use_subqueries: bool = field(default_factory=lambda: env_bool("USE_SUBQUERIES", False))
+    use_subqueries: bool = field(default_factory=lambda: env_bool("USE_SUBQUERIES", True))
     subquery_quota: int = field(default_factory=lambda: env_int("SUBQUERY_QUOTA", 4, 1, 20))
     # Проверки ответа и повторная генерация (T1.15; 03b §5)
     quote_min_chars: int = field(default_factory=lambda: env_int("QUOTE_MIN_CHARS", 20, 1, 500))
