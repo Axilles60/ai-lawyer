@@ -54,6 +54,15 @@ def main():
                 archive.writestr('fictional-contract-2030.txt', FIXTURE_DOCUMENT)
             run('config', '--quiet')
             print(run('build', '--pull'), flush=True)
+            # Verify the real daemon rejects a missing bind source without creating
+            # a directory in its place. Only this script's synthetic file is removed.
+            archive_path = ROOT / 'knowledge-base.zip'
+            archive_bytes = archive_path.read_bytes()
+            archive_path.unlink()
+            missing = subprocess.run([*command, 'create'], cwd=ROOT, capture_output=True,
+                                     text=True, encoding='utf-8', timeout=60)
+            assert missing.returncode != 0 and not archive_path.exists(), 'Missing bind was silently created'
+            archive_path.write_bytes(archive_bytes)
             print(run('up', '-d', '--wait', '--wait-timeout', '180'), flush=True)
             assert 'Юридический' in request('/')
             docs = request('/api/documents')
@@ -79,6 +88,15 @@ def main():
                 writer.writerow(['id', 'question'])
                 writer.writerows([['fiction-1', QUESTION], ['fiction-2', QUESTION]])
             container = run('ps', '-q', 'chat').strip()
+            inspected = subprocess.run(['docker', 'inspect', container], capture_output=True,
+                                       text=True, encoding='utf-8', check=True)
+            mount = next(m for m in json.loads(inspected.stdout)[0]['Mounts']
+                         if m['Destination'] == '/data/knowledge-base.zip')
+            assert mount['Type'] == 'bind' and mount['RW'] is False, mount
+            image_files = run('exec', '-T', 'chat', 'python', '-c',
+                             "from pathlib import Path; assert not Path('/app/.env').exists(); "
+                             "assert not Path('/app/knowledge-base.zip').exists(); print('isolated')").strip()
+            assert image_files == 'isolated'
             subprocess.run(['docker', 'cp', str(data), container + ':/tmp/smoke-input'], check=True)
             run('exec', '-T', '-e', 'DATA_DIR=/tmp/smoke-input', 'chat', 'python', 'solution.py', timeout=90)
             output = run('exec', '-T', 'chat', 'cat', '/app/submission.csv')
@@ -91,6 +109,8 @@ def main():
             summary = {'real_docker_compose': True, 'healthy': True, 'uid': int(uid),
                        'web_answer': True, 'source_highlight': True, 'history': True,
                        'batch_answers': len(rows), 'synthetic_kb': True, 'paid_calls': 0,
+                       'missing_bind_rejected': True, 'readonly_bind': True,
+                       'secrets_and_kb_not_baked_into_image': True,
                        'model_requests': dict(models.counts)}
             print(json.dumps(summary), flush=True)
             (ROOT / '.local' / 'container-smoke-result.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
