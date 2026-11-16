@@ -1,0 +1,13 @@
+{
+  "kind": "platform",
+  "name": "submission_bd82280-novec.zip",
+  "archive": "submission_bd82280-novec.zip",
+  "commit": "bd82280c5fe8e6408818f3953bd6bd886c07023f",
+  "date": "2026-11-16",
+  "time_moscow": "12:40",
+  "platform_percent": 37.601,
+  "seconds": 903.2,
+  "status": "success",
+  "origin_evidence": "User message; duplicate reply is same measurement",
+  "independently_queried_platform": false
+}

@@ -120,5 +120,8 @@
     "solution.py": "71798219306a0254100e0a0c8f0a01b682108c0b76467740586abf73fe6d03ec",
     "textnorm.py": "d7df2e692b97747287468ce4c9a8bd06659573c162105be22096eb6b6bc9ca11",
     "verifier.py": "3113e14827af052392e250d09803eb6f5323aae8752a2243fcef649f231d43b2"
-  }
+  },
+  "selected_submission": "submission_bd82280-novec.zip",
+  "selected_submission_commit": "bd82280c5fe8e6408818f3953bd6bd886c07023f",
+  "web_container_hardening_20261116": true
 }

@@ -1,0 +1,290 @@
+{
+  "date": "2026-11-16",
+  "scope": "final admission hardening; RAG runtime/config frozen",
+  "selected_submission": "submission_bd82280-novec.zip",
+  "runtime_files_identical_to_selected": 24,
+  "public_tests": {
+    "run": 17,
+    "passed": 17,
+    "external_api_calls": 0
+  },
+  "browser_live": {
+    "kind": "actual browser + bounded live model server; no replay or API mock",
+    "url": "http://127.0.0.1:8767",
+    "question_id": "1",
+    "requests": [
+      {
+        "label": "demo1",
+        "http_status": 200,
+        "elapsed_s": 35.523,
+        "fallback": false,
+        "source_count": 2,
+        "answer_chars": 253
+      },
+      {
+        "label": "follow-up",
+        "http_status": 200,
+        "elapsed_s": 58.252,
+        "fallback": false,
+        "source_count": 2,
+        "answer_chars": 202
+      }
+    ],
+    "page_errors": [],
+    "document_count": 21,
+    "first_source_highlight": {
+      "chars": 95,
+      "visible": true,
+      "document_scroll_top": 425
+    },
+    "last_user_reply_count": 2,
+    "followup_source_highlight": {
+      "chars": 95,
+      "scroll_top": 425
+    },
+    "completed": true,
+    "finished_utc": "2026-11-16T09:59:02.419Z",
+    "input_cleared_after_success": true
+  },
+  "additional_http_live_cases": [
+    {
+      "id": "3",
+      "http": 200,
+      "fallback": false,
+      "elapsed_s": 37.329,
+      "sources": 0,
+      "source_checks": []
+    },
+    {
+      "id": "13",
+      "http": 200,
+      "fallback": false,
+      "elapsed_s": 132.218,
+      "sources": 3,
+      "source_checks": [
+        {
+          "node": "dd0d53df818:ст.9/ч.2",
+          "exact_fragment": true
+        },
+        {
+          "node": "dd0d53df818:ст.9/ч.3",
+          "exact_fragment": true
+        }
+      ]
+    }
+  ],
+  "docker_actual": {
+    "independent_verification_utc": "2026-11-16T09:56:50.908983+00:00",
+    "run": {
+      "id": 43843980415,
+      "head_sha": "b7f7705354cca4251cfecc7e951f7cb192cf8f26",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/Axilles60/ai-lawyer/actions/runs/43843980415",
+      "created_at": "2026-11-16T09:54:24Z",
+      "updated_at": "2026-11-16T09:54:58Z"
+    },
+    "job": {
+      "id": 133219398289,
+      "name": "container",
+      "conclusion": "success",
+      "runner_labels": [
+        "ubuntu-24.04"
+      ],
+      "started_at": "2026-11-16T09:54:28Z",
+      "completed_at": "2026-11-16T09:54:57Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Build and exercise production Docker Compose",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "conclusion": "success"
+        }
+      ]
+    },
+    "logs_sha256": "22c4c486754c95962cbcab8fb77f8790c2e856e8eecdc3cfb4a5f5048d8bbf7a",
+    "actual_build_evidence": [
+      "2026-11-16T09:54:47.3748099Z #2 [internal] load build definition from Dockerfile",
+      "2026-11-16T09:54:47.3808531Z #14 naming to docker.io/library/ai-lawyer-smoke-2228-chat done"
+    ],
+    "observed_summary": {
+      "real_docker_compose": true,
+      "healthy": true,
+      "uid": 10001,
+      "web_answer": true,
+      "source_highlight": true,
+      "history": true,
+      "batch_answers": 2,
+      "synthetic_kb": true,
+      "paid_calls": 0,
+      "model_requests": {
+        "/embeddings": 10,
+        "/chat/completions": 12,
+        "/rerank": 4
+      }
+    },
+    "source_at_tested_commit": {
+      "tools/container_smoke.py": {
+        "git_blob_sha": "5a7ef5df722b250bece37fc29e55311bce0fc671",
+        "sha256": "09d882f4f0cd9db0aea56099e102bc0edfd66a5e6ee2ef907ad727568daf10d5"
+      },
+      ".github/workflows/final-readiness.yml": {
+        "git_blob_sha": "e0f2b401bf7e6114afa194bb9f99c83c76b6445c",
+        "sha256": "c32048959bbd36bba76809c6fa3dcb156ffb3da49ba3124c82f2f5f4d73e2717"
+      },
+      "Dockerfile": {
+        "git_blob_sha": "09a6085b181898d2543979aadc311f95e846cda8",
+        "sha256": "11808320c5e8eb19cb1b89fb89c2f9364a34e0dc872ac81e1b127e4e7e5da6dc"
+      },
+      "compose.yaml": {
+        "git_blob_sha": "bbf037bfd46bdd4fddcf34f5e717377d2f7441b9",
+        "sha256": "a6c8b1826312af95cdfb070f766050a4b8a751bf1b62c660ecdf84d26b69d42e"
+      },
+      ".dockerignore": {
+        "git_blob_sha": "416a64ef4f9850e6d2028e544a13df499fb13073",
+        "sha256": "c85bbb9a109371227996fb392b9a71556f02ea797764f0d0e7a620f8c3ee3731"
+      }
+    },
+    "verified_assertions": [
+      "Real docker compose config/build --pull/up --wait ran from Ubuntu 24.04 Actions runner; summary only printed after assertions.",
+      "Container health reached ready; runtime UID asserted exactly 10001.",
+      "Fictional archive and synthetic API credentials generated for test; no production .env or corpus used.",
+      "Web answer and history follow-up contained fictional expected fact without fallback.",
+      "Document fragment matched server-provided start/end bounds for selected source.",
+      "Batch solution.py ran in same nonroot container, wrote /app/submission.csv, correct id/answer columns and 2 expected answers.",
+      "Synthetic local model server observed 10 embeddings, 12 chat completions, 4 rerank requests.",
+      "Compose cleanup stopped and removed container."
+    ],
+    "limitations": [
+      "No live paid model/provider quality measurement.",
+      "Source highlighting checked document API fragment bounds, not rendered browser pixels.",
+      "History checked successful follow-up output; mock server does not prove semantic reasoning quality.",
+      "Read-only mount/missing-file policy and image context allowlist are specified and native-tested; this CI smoke did not include explicit negative mutation probes.",
+      "Local Windows/WSL has no OCI runtime; actual container evidence is remote GitHub Actions only."
+    ],
+    "second_run": {
+      "independent_verification_utc": "2026-11-16T10:11:57.849237+00:00",
+      "run": {
+        "id": 43845199815,
+        "head_sha": "66b4ef3830a37b16307ce39c6bd2027d3a4bf53e",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/Axilles60/ai-lawyer/actions/runs/43845199815",
+        "created_at": "2026-11-16T10:02:27Z",
+        "updated_at": "2026-11-16T10:03:13Z"
+      },
+      "job_id": 133223508442,
+      "logs_sha256": "019a578a4ac0460eff89e36c46e63968185960c1b53d5429b40dfc6aac2e309b",
+      "observed_summary": {
+        "real_docker_compose": true,
+        "healthy": true,
+        "uid": 10001,
+        "web_answer": true,
+        "source_highlight": true,
+        "history": true,
+        "batch_answers": 2,
+        "synthetic_kb": true,
+        "paid_calls": 0,
+        "missing_bind_rejected": true,
+        "readonly_bind": true,
+        "secrets_and_kb_not_baked_into_image": true,
+        "model_requests": {
+          "/embeddings": 10,
+          "/chat/completions": 12,
+          "/rerank": 4
+        }
+      },
+      "smoke_source_git_blob_sha": "687352c94a93531c14017dc2cbe0f12f2c7d1c14",
+      "smoke_source_sha256": "064a0e40981241cdcff21a144c5da265e01b129441f7f1984e96d3b16d3107fa",
+      "verified_negative_and_image_checks": [
+        "Real docker compose create failed while synthetic bind source was absent; source path remained absent, then original fixture restored.",
+        "docker inspect showed /data/knowledge-base.zip Type=bind and RW=false.",
+        "Inside running production image /app/.env and /app/knowledge-base.zip did not exist; fixture remained a separate mount."
+      ],
+      "limitations": [
+        "Image absence probe checks expected .env and KB paths; it is not a general secret scanner.",
+        "Read-only mount proven via actual daemon mount metadata; no attempted write mutation was needed.",
+        "Local fixture API quality and source offsets do not prove live-provider quality or browser-rendered highlighting."
+      ]
+    }
+  },
+  "batch_actual": {
+    "stats": {
+      "questions": 18,
+      "answered": 18,
+      "fallbacks": 0,
+      "unfinished": 0,
+      "seconds": 163.2,
+      "modes": {
+        "full": 18
+      },
+      "economy": {
+        "0": 18
+      },
+      "economy_max": 0,
+      "clarify": 0,
+      "refuse": 1,
+      "http_429": 0,
+      "api_calls": 232,
+      "min_workers": 8,
+      "sec_per_question": 57.7,
+      "max_question_s": 106.0
+    },
+    "csv_valid": true,
+    "input_questions": 18,
+    "output_rows": 18,
+    "max_answer_chars": 881,
+    "code_from_submission": "submission_bd82280-novec.zip",
+    "cold_index": true,
+    "embedding_cache_hits": 0,
+    "models_actual": true,
+    "transport_only_observer": true,
+    "budget_usd": 1.5,
+    "charged_or_reserved_upper_usd": 0.17233052792,
+    "physical_attempts": 232
+  },
+  "platform_user_report": {
+    "kind": "platform",
+    "name": "submission_bd82280-novec.zip",
+    "archive": "submission_bd82280-novec.zip",
+    "commit": "bd82280c5fe8e6408818f3953bd6bd886c07023f",
+    "date": "2026-11-16",
+    "time_moscow": "12:40",
+    "platform_percent": 37.601,
+    "seconds": 903.2,
+    "status": "success",
+    "origin_evidence": "User message; duplicate reply is same measurement",
+    "independently_queried_platform": false
+  },
+  "cost": {
+    "web_limit_usd": 1.0,
+    "web_upper_usd": 0.04543466496,
+    "web_physical_attempts": 63,
+    "batch_limit_usd": 1.5,
+    "batch_upper_usd": 0.17233052792,
+    "batch_physical_attempts": 232,
+    "new_metered_upper_usd": 0.21776519288,
+    "previous_metered_upper_usd": 1.9477351916800019,
+    "postflight_precautionary_reserve_usd": 1.0,
+    "all_accounted_plus_reserve_usd": 3.165500384560002,
+    "total_authorized_usd": 10
+  },
+  "remaining_user_action": "Upload final presentation PDF or full project ZIP to final submission section and keep acceptance confirmation",
+  "final_materials_platform_upload_confirmed": false,
+  "new_rag_flags_enabled": false
+}
