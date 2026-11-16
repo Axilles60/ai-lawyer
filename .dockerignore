@@ -3,3 +3,8 @@
 !requirements.txt
 !static/
 !static/**
+# Build inputs are an allowlist; secrets and corpus artifacts are never inputs.
+.env
+.env.*
+**/__pycache__/
+**/*.pyc

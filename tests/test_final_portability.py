@@ -31,7 +31,7 @@ QUESTION = "По договору № ФТ-43/2030 в какой срок исп
 
 
 class LocalModelServer:
-    def __init__(self, fail=False):
+    def __init__(self, fail=False, host='127.0.0.1'):
         self.counts = Counter()
         self.lock = threading.Lock()
         owner = self
@@ -88,7 +88,7 @@ class LocalModelServer:
                 self.end_headers()
                 self.wfile.write(encoded)
 
-        self.server = ThreadingHTTPServer(('127.0.0.1', 0), Handler)
+        self.server = ThreadingHTTPServer((host, 0), Handler)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
 
     def __enter__(self):
@@ -241,6 +241,72 @@ print(json.dumps({'web_lifespan':True,'chat':True,'history':True,'source_view':T
             result = json.loads(run.stdout.strip().splitlines()[-1])
             self.assertTrue(all(result.values()))
             self.assertGreater(server.counts['/embeddings'], 0)
+
+
+class FrontEndBehaviorTests(unittest.TestCase):
+    @unittest.skipUnless(shutil.which('node'), 'Node.js is optional for browser-script regression checks')
+    def test_unicode_source_race_and_failed_chat_retry(self):
+        # Execute the shipped page script with a local DOM/fetch harness: no browser
+        # package or external endpoint is needed for these state regressions.
+        script = r"""
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+class Element {
+  constructor(tag='div'){this.tagName=tag;this.children=[];this._text='';this.value='';this.disabled=false;this.scrollTop=0;this.scrollHeight=0;}
+  get textContent(){return this._text+this.children.map(c=>c.textContent).join('');}
+  set textContent(text){this._text=String(text);this.children=[];}
+  append(...nodes){for(const node of nodes){node.parentElement=this;this.children.push(node);}}
+  replaceChildren(...nodes){this._text='';this.children=[];this.append(...nodes);}
+  scrollIntoView(){this.scrolled=true;}
+  focus(){this.focused=true;}
+}
+const elements=Object.fromEntries(['messages','documents','documentText','status','question','send','clear','form','docTitle'].map(id=>[id,new Element()]));
+const document={querySelector:s=>elements[s.slice(1)],createElement:t=>new Element(t),createTextNode:t=>{const n=new Element('#text');n.textContent=t;return n}};
+const prefix='Начало 😀\n'+'Длинный документ.\n'.repeat(120),fragment='Точный подтверждающий фрагмент.';
+const source={title:'Unicode source',text:prefix+fragment+'\nКонец',fragment,start:Array.from(prefix).length,end:Array.from(prefix+fragment).length};
+const response=d=>({ok:true,json:async()=>d});
+let resolveSlow,resolveChat,mode='hold',requests=[];
+async function fetch(url,options){
+ if(url==='/api/documents')return response([{id:'unicode',title:'Unicode source'}]);
+ if(url.startsWith('/api/documents/unicode?'))return response(source);
+ if(url.startsWith('/api/documents/slow?'))return new Promise(resolve=>resolveSlow=()=>resolve(response({title:'Old',text:'Old source',start:-1,end:-1,fragment:''})));
+ if(url.startsWith('/api/documents/fast?'))return response({title:'Latest',text:'Latest source',start:-1,end:-1,fragment:''});
+ if(url.startsWith('/api/documents/bad?'))throw Error('offline');
+ if(url==='/api/chat'){
+  requests.push(JSON.parse(options.body));
+  if(mode==='fail')throw Error('offline');
+  if(mode==='hold')await new Promise(resolve=>resolveChat=resolve);
+  return response({answer:'Подтвержденный ответ',sources:[],fallback:false});
+ }
+ throw Error('Unexpected external fetch '+url);
+}
+const context=vm.createContext({document,fetch,console});
+const html=fs.readFileSync('static/index.html','utf8');
+vm.runInContext(html.match(/<script>([\s\S]*?)<\/script>/)[1],context);
+(async()=>{
+ await context.openDoc('unicode','n');
+ const mark=elements.documentText.children.find(n=>n.tagName==='mark');
+ assert(mark,'source must be highlighted');assert.equal(mark.textContent,fragment);assert(mark.scrolled,'citation must be brought into view');
+ const old=context.openDoc('slow');await context.openDoc('fast');resolveSlow();await old;
+ assert.equal(elements.docTitle.textContent,'Latest');assert.equal(elements.documentText.textContent,'Latest source');
+ await context.openDoc('bad');assert.match(elements.documentText.textContent,/Не удалось загрузить источник/);assert(!elements.documentText.textContent.includes('Latest source'));
+ elements.question.value='Первый вопрос';const pending=elements.form.onsubmit({preventDefault(){}});
+ assert.match(elements.status.textContent,/Ищу/);assert(elements.send.disabled);assert(elements.clear.disabled);assert(elements.question.disabled);
+ await elements.form.onsubmit({preventDefault(){}});assert.equal(requests.length,1,'pending submission must not duplicate request');
+ resolveChat();await pending;assert.equal(elements.status.textContent,'Готово');
+ mode='fail';elements.question.value='Вопрос для повтора';await elements.form.onsubmit({preventDefault(){}});
+ assert.equal(elements.question.value,'Вопрос для повтора');assert(!elements.send.disabled);assert(!elements.question.disabled);
+ mode='ok';await elements.form.onsubmit({preventDefault(){}});
+ assert.deepStrictEqual(requests[2].turns.map(t=>t.role),['user','assistant','user']);
+ assert.equal(requests[2].turns[2].text,'Вопрос для повтора');
+ elements.clear.onclick();assert.equal(elements.messages.children.length,0);assert.equal(elements.question.value,'');
+ elements.question.value='Новый диалог';await elements.form.onsubmit({preventDefault(){}});assert.equal(requests[3].turns.length,1);
+ console.log('frontend state, Unicode source, race, and retry: OK');
+})().catch(e=>{console.error(e);process.exitCode=1});
+"""
+        result = subprocess.run([shutil.which('node'), '-'], input=script, cwd=ROOT,
+                                capture_output=True, text=True, encoding='utf-8', timeout=20)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('frontend state, Unicode source, race, and retry: OK', result.stdout)
 
 
 if __name__ == '__main__':

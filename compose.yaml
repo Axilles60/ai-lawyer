@@ -1,10 +1,16 @@
 services:
   chat:
     build: .
+    init: true
     ports:
       - "127.0.0.1:8000:8000"
     env_file: .env
     environment:
       KB_PATH: /data/knowledge-base.zip
     volumes:
-      - ./knowledge-base.zip:/data/knowledge-base.zip:ro
+      - type: bind
+        source: ./knowledge-base.zip
+        target: /data/knowledge-base.zip
+        read_only: true
+        bind:
+          create_host_path: false
