@@ -1,12 +1,12 @@
 {
-  "id": "quality-prf",
+  "id": "balanced-lean-prf",
   "settings_overrides": {
     "use_rerank_pool_48": false,
-    "use_hyde": true,
+    "use_hyde": false,
     "use_chain_of_note": false,
     "use_bge_query_prefix": false,
     "use_best_of_two": true,
-    "use_stepback": true,
+    "use_stepback": false,
     "use_draft_judge": true,
     "use_draft_judge_full": false,
     "use_minimal": true,
@@ -18,7 +18,7 @@
     "strict_targets": false,
     "demote_other": false,
     "rerank_instruct": false,
-    "use_subqueries": true,
+    "use_subqueries": false,
     "use_conditional_example_v3": false,
     "use_conditional_example_v2": false,
     "use_conditional_example": false,
@@ -87,14 +87,14 @@
     "embed_workers": 4,
     "llm_rag_cycles": 2,
     "critic_rounds": 2,
-    "use_subchunk": false,
-    "use_prf": true
+    "use_prf": true,
+    "use_subchunk": false
   },
   "precomputed_assets": false,
   "runtime_sha256": {
     "app.py": "94e61e2ff58fa6623d0a5ca05dd4089209522ba88966473138a2cd550fab9880",
     "chunk_provenance.py": "73ce52ef35df85b61d034e74479605fa3380b696bc9eebc2a287f94dd3435d37",
-    "config.py": "663f63d73031448800ac831705874045ce952971412d4cdecab8c2c3153ac2cd",
+    "config.py": "75bcd207c95ed3081f504b4a52cefb9e323860b8a1a4940731b9e1ab82117198",
     "contextual.py": "50ef65712a3148deed95cb216a262c6c350ac1807b58fe5803d6443431c4e69c",
     "critic.py": "1bcd4bf1b5469c118183fbf1248ce9d0dc1c068e8c04af4b7d2c725058ced264",
     "dialog.py": "a5e106c309a131db00270ce10e4499a380418f1d51af73c982d83dfe1dab7dd9",
