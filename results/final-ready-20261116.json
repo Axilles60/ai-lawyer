@@ -286,5 +286,6 @@
   },
   "remaining_user_action": "Upload final presentation PDF or full project ZIP to final submission section and keep acceptance confirmation",
   "final_materials_platform_upload_confirmed": false,
-  "new_rag_flags_enabled": false
+  "new_rag_flags_enabled": false,
+  "all_live_source_slices_checked": 7
 }
