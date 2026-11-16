@@ -14,6 +14,6 @@ jobs:
         with:
           persist-credentials: false
       - name: Check shipped browser behavior without API
-        run: python3 -m unittest tests.test_final_portability.FinalPortabilityTests.test_unicode_source_race_and_failed_chat_retry -v
+        run: python3 -m unittest tests.test_final_portability.FrontEndBehaviorTests.test_unicode_source_race_and_failed_chat_retry -v
       - name: Build and exercise production Docker Compose
         run: python3 tools/container_smoke.py
