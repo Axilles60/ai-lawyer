@@ -149,15 +149,15 @@ class Settings:
     use_chain_of_note: bool = field(default_factory=lambda: env_bool("USE_CHAIN_OF_NOTE", False))
     use_bge_query_prefix: bool = field(default_factory=lambda: env_bool("USE_BGE_QUERY_PREFIX", False))
     use_best_of_two: bool = field(default_factory=lambda: env_bool("USE_BEST_OF_TWO", True))
-    best_of_n: int = field(default_factory=lambda: env_int("BEST_OF_N", 2, 0, 8))  # T3.27: число доп. генераций
+    best_of_n: int = field(default_factory=lambda: env_int("BEST_OF_N", 3, 0, 8))  # T3.27: число доп. генераций
     use_stepback: bool = field(default_factory=lambda: env_bool("USE_STEPBACK", True))
     use_draft_judge: bool = field(default_factory=lambda: env_bool("USE_DRAFT_JUDGE", True))
     use_draft_judge_full: bool = field(default_factory=lambda: env_bool("USE_DRAFT_JUDGE_FULL", False))
     use_minimal: bool = field(default_factory=lambda: env_bool("USE_MINIMAL", True))
     use_contextual: bool = field(default_factory=lambda: env_bool("USE_CONTEXTUAL", False))
     use_d2q: bool = field(default_factory=lambda: env_bool("USE_D2Q", False))
-    use_prf: bool = field(default_factory=lambda: env_bool("USE_PRF", False))
-    use_lean_context: bool = field(default_factory=lambda: env_bool("USE_LEAN_CONTEXT", False))
+    use_prf: bool = field(default_factory=lambda: env_bool("USE_PRF", True))
+    use_lean_context: bool = field(default_factory=lambda: env_bool("USE_LEAN_CONTEXT", True))
     use_query2doc: bool = field(default_factory=lambda: env_bool("USE_Q2D", False))
     rerank_top_n: int = field(default_factory=lambda: env_int("RERANK_TOP_N_SLICE", 8, 1, 50))
     rerank_doc_chars: int = field(default_factory=lambda: env_int("RERANK_DOC_CHARS", 1500, 200, 8000))
