@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.local/
+build/
+runs/
+dev_cache/
+*.npz
+*.sqlite*
+knowledge-base.zip
+questions.csv
+submission.csv
+contextual_cache.json
+node_questions*.json

@@ -1,0 +1,10 @@
+# Stable text diffs across Windows and external working copies.
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+# Frozen evaluations retain their original bytes (including embedded newlines).
+eval/q19_*.csv -text
+eval/baseline*.csv -text
+*.zip binary
+*.npz binary
